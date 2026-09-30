@@ -4,9 +4,9 @@
 <title>Gym Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#ECEEF1;--card:#fff;--ink:#12161B;--mut:#5A6572;--line:#D5DAE1;--acc:#2B50FF;--onacc:#fff;--mach:#A3ADBB;--soft:#F4F6F8}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#4B5563;--soft:#1E242C}}
-:root[data-theme="dark"]{--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#4B5563;--soft:#1E242C}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#ECEEF1;--card:#fff;--ink:#12161B;--mut:#5A6572;--line:#D5DAE1;--acc:#2B50FF;--onacc:#fff;--mach:#E8A33D;--soft:#F4F6F8;--body:#2E3B52}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD}}
+:root[data-theme="dark"]{--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD}
 *,*:before,*:after{box-sizing:inherit}html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Barlow,system-ui,-apple-system,"Segoe UI",sans-serif}
 h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;margin:0;letter-spacing:.01em}
@@ -22,7 +22,7 @@ button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .prog{min-width:180px;flex:0 1 240px}.prog div{height:8px;background:var(--line);border-radius:8px;overflow:hidden}.prog i{display:block;height:100%;background:var(--acc);width:0;transition:width .3s}.prog span{font-size:13px;color:var(--mut)}
 .note{background:var(--soft);border-left:4px solid var(--acc);padding:10px 14px;border-radius:0 8px 8px 0;margin:0 0 14px;font-size:15px}
 .grp{font:700 20px "Barlow Condensed",sans-serif;color:var(--mut);margin:22px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 14px;overflow:hidden;display:grid;grid-template-columns:minmax(0,340px) 1fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 14px;overflow:hidden;display:grid;grid-template-columns:minmax(0,420px) 1fr}
 .card.done{opacity:.6}
 .art{background:var(--soft);padding:12px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
 .art svg{width:100%;height:auto;display:block;background:var(--card);border-radius:10px}
@@ -38,8 +38,11 @@ h4{margin:12px 0 4px;font:600 15px Barlow,sans-serif}
 .avoid{color:var(--mut)}
 .wk{display:flex;gap:6px;margin:6px 0 0}.wk button{font:600 13px Barlow,sans-serif;padding:4px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer}.wk button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
 @media (max-width:680px){.card{grid-template-columns:1fr}.art{border-right:0;border-bottom:1px solid var(--line)}header h1{font-size:34px}}
+.mtag{align-self:flex-start;font:600 14px Barlow,sans-serif;background:var(--mach);color:#2B1B00;padding:4px 12px;border-radius:8px}
+.cap{font:600 15px Barlow,sans-serif;text-align:center;min-height:22px}
+.art svg{touch-action:pan-y;cursor:grab}.chips{flex-wrap:wrap}.hint{color:var(--mut);font-size:12px;text-align:center}
 </style></head><body><div class="wrap">
-<header><h1>Gym Plan</h1><p>Five days. Tap a day, follow the cards top to bottom, and tick each exercise off. Sets × reps are suggestions.</p></header>
+<header><h1>Gym Plan</h1><p>Five days. Tap a day, follow the cards top to bottom, and tick each exercise off. Sets × reps are suggestions.</p><p class="note" style="margin-top:14px"><b>New to the gym?</b> The amber shapes are the machine. The blue dots and bars are where your hands or feet go. Spin any diagram with Side / Front / Back, or drag it. Start light, ask staff to set the seat and pin, and stop if anything hurts.</p></header>
 <nav id="tabs" role="tablist"></nav><main id="main"></main></div>
 <script>
 // pose arrays. side: [headX,headY,neckX,neckY,hipX,hipY,kneeX,kneeY,footX,footY,elbowX,elbowY,wristX,wristY]
@@ -49,28 +52,28 @@ const SEAT=[90,50,90,62,90,98,122,98,124,134];
 const seatB=[88,50,88,62,88,98];
 const F=(...a)=>a;
 const X={
-incline_press:{v:'s',m:'b',A:[62,53,70,60,100,88,128,92,132,124,79,74,85,60],B:[62,53,70,60,100,88,128,92,132,124,73,44,76,29],q:[['l',60,62,98,95,7],['l',98,96,124,96,6],['l',100,100,100,136,4],['l',72,80,72,136,4]]},
-pec_deck:{v:'f',m:'h',A:[56,96,44,62,44,40,10,100,10,134],B:[56,96,12,62,10,40,10,100,10,134],q:[['r',108,48,24,54],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
+incline_press:{v:'s',g:20,m:'b',A:[62,53,70,60,100,88,128,92,132,124,79,74,85,60],B:[62,53,70,60,100,88,128,92,132,124,73,44,76,29],q:[['l',60,62,98,95,7],['l',98,96,124,96,6],['l',100,100,100,136,4],['l',72,80,72,136,4]]},
+pec_deck:{v:'f',sit:1,fe:10,fw:18,m:'h',A:[56,96,44,62,44,40,10,100,10,134],B:[56,96,12,62,10,40,10,100,10,134],q:[['r',108,48,24,54],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
 decline_press:{v:'s',m:'b',A:[57,92,65,88,95,72,120,80,128,104,78,92,73,74],B:[57,92,65,88,95,72,120,80,128,104,66,72,68,56],q:[['l',56,96,98,78,7],['l',60,100,60,136,4],['l',100,82,100,136,4],['c',124,104,5]]},
-shoulder_press:{v:'f',m:'h',A:[56,96,34,74,36,52,10,100,10,134],B:[56,96,28,44,24,20,10,100,10,134],q:[['r',108,46,24,54],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
-lateral_raise:{v:'f',m:'d',A:[42,82,19,64,20,82,5,108,8,134],B:[42,82,34,48,48,44,5,108,8,134],q:[]},
-pushdown:{v:'s',m:'h',c:[116,6],A:[...ST,100,60,116,52],B:[...ST,101,60,103,78],q:[['l',126,4,126,136,6],['c',116,6,4]]},
-overhead_tri:{v:'s',m:'h',c:[56,126],A:[...ST,104,21,90,26],B:[...ST,104,21,110,4],q:[['l',56,10,56,136,6],['c',56,126,4]]},
-lat_pulldown:{v:'s',m:'h',c:[110,6],A:[...SEAT,95,46,100,32],B:[...SEAT,82,80,100,66],q:[['l',80,6,140,6,5],['l',104,90,128,90,7],['l',76,104,100,104,6],['l',90,106,90,136,4]]},
-tbar_row:{v:'s',m:'h',c:[178,128],A:[115,50,108,56,80,78,84,104,84,134,116,71,122,86],B:[115,50,108,56,80,78,84,104,84,134,92,70,108,76],q:[['r',50,132,80,4],['c',178,128,10]]},
-close_row:{v:'s',m:'h',c:[212,98],A:[90,50,90,62,90,98,120,96,128,128,106,64,122,66],B:[90,50,90,62,90,98,120,96,128,128,78,74,100,82],q:[['l',76,104,102,104,6],['l',90,106,90,136,4],['r',132,112,8,24]]},
-rear_delt:{v:'f',m:'h',A:[56,96,10,60,8,58,10,100,10,134],B:[56,96,34,58,54,58,10,100,10,134],q:[['r',108,50,24,42],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
+shoulder_press:{v:'f',sit:1,fe:2,fw:4,m:'h',A:[56,96,34,74,36,52,10,100,10,134],B:[56,96,28,44,24,20,10,100,10,134],q:[['r',108,46,24,54],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
+lateral_raise:{v:'f',fw:0,m:'d',A:[42,82,19,64,20,82,5,108,8,134],B:[42,82,34,48,48,44,5,108,8,134],q:[]},
+pushdown:{v:'s',g:6,m:'h',c:[116,6],A:[...ST,100,60,116,52],B:[...ST,101,60,103,78],q:[['l',126,4,126,136,6],['c',116,6,4]]},
+overhead_tri:{v:'s',g:6,m:'h',c:[56,126],A:[...ST,104,21,90,26],B:[...ST,104,21,110,4],q:[['l',56,10,56,136,6],['c',56,126,4]]},
+lat_pulldown:{v:'s',g:26,m:'h',c:[110,6],A:[...SEAT,95,46,100,32],B:[...SEAT,82,80,100,66],q:[['l',80,6,140,6,5],['l',104,90,128,90,7],['l',76,104,100,104,6],['l',90,106,90,136,4]]},
+tbar_row:{v:'s',g:6,m:'h',c:[178,128],A:[115,50,108,56,80,78,84,104,84,134,116,71,122,86],B:[115,50,108,56,80,78,84,104,84,134,92,70,108,76],q:[['r',50,132,80,4],['c',178,128,10]]},
+close_row:{v:'s',g:6,m:'h',c:[212,98],A:[90,50,90,62,90,98,120,96,128,128,106,64,122,66],B:[90,50,90,62,90,98,120,96,128,128,78,74,100,82],q:[['l',76,104,102,104,6],['l',90,106,90,136,4],['r',132,112,8,24]]},
+rear_delt:{v:'f',sit:1,fe:12,fw:14,m:'h',A:[56,96,10,60,8,58,10,100,10,134],B:[56,96,34,58,54,58,10,100,10,134],q:[['r',108,50,24,42],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
 incline_curl:{v:'s',m:'d',A:[62,56,70,62,94,92,122,94,126,126,72,78,74,94],B:[62,56,70,62,94,92,122,94,126,126,74,80,88,66],q:[['l',60,64,90,94,7],['l',90,96,118,96,6],['l',72,82,72,136,4],['l',108,98,108,136,4]]},
-preacher:{v:'s',m:'h',A:[...seatB,120,98,122,134,103,75,114,86],B:[...seatB,120,98,122,134,103,75,110,58],q:[['l',98,66,126,94,8],['l',106,104,106,136,4],['l',76,102,100,102,6]]},
-hammer:{v:'f',m:'d',A:[42,82,19,64,20,82,5,108,8,134],B:[42,82,19,64,23,47,5,108,8,134],q:[]},
+preacher:{v:'s',g:12,m:'h',A:[...seatB,120,98,122,134,103,75,114,86],B:[...seatB,120,98,122,134,103,75,110,58],q:[['l',98,66,126,94,8],['l',106,104,106,136,4],['l',76,102,100,102,6]]},
+hammer:{v:'f',fw:8,m:'d',A:[42,82,19,64,20,82,5,108,8,134],B:[42,82,19,64,23,47,5,108,8,134],q:[]},
 leg_press:{v:'s',m:'h',fm:1,A:[49,63,56,70,80,96,98,74,124,86,68,88,84,98],B:[49,63,56,70,80,96,104,77,128,58,68,88,84,98],q:[['l',46,72,84,104,7],['l',60,108,60,136,4]]},
 leg_curl:{v:'s',m:'h',fm:2,A:[...seatB,122,98,152,100,100,78,110,92],B:[...seatB,122,98,120,130,100,78,110,92],q:[['l',96,92,128,92,6],['l',74,102,100,102,6],['l',90,106,90,136,4],['l',80,58,80,100,7]]},
 leg_ext:{v:'s',m:'h',fm:2,A:[...seatB,122,98,124,130,100,78,110,92],B:[...seatB,122,98,152,100,100,78,110,92],q:[['l',96,92,128,92,6],['l',74,102,100,102,6],['l',90,106,90,136,4],['l',80,58,80,100,7]]},
-abductor:{v:'f',m:'h',kp:6,A:[56,96,24,74,26,92,7,100,9,134],B:[56,96,24,74,26,92,28,100,30,134],q:[['r',108,48,24,50],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
-adductor:{v:'f',m:'h',kp:-6,A:[56,96,24,74,26,92,28,100,30,134],B:[56,96,24,74,26,92,7,100,9,134],q:[['r',108,48,24,50],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
-cable_crunch:{v:'s',m:'h',c:[150,8],A:[106,44,106,56,108,94,118,126,84,132,118,58,112,44],B:[134,92,124,78,108,94,118,126,84,132,126,102,136,92],q:[['l',152,4,152,136,6]]},
+abductor:{v:'f',sit:1,m:'h',kp:6,A:[56,96,24,74,26,92,7,100,9,134],B:[56,96,24,74,26,92,28,100,30,134],q:[['r',108,48,24,50],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
+adductor:{v:'f',sit:1,m:'h',kp:-6,A:[56,96,24,74,26,92,28,100,30,134],B:[56,96,24,74,26,92,7,100,9,134],q:[['r',108,48,24,50],['l',104,104,136,104,6],['l',120,106,120,136,4]]},
+cable_crunch:{v:'s',g:6,m:'h',c:[150,8],A:[106,44,106,56,108,94,118,126,84,132,118,58,112,44],B:[134,92,124,78,108,94,118,126,84,132,126,102,136,92],q:[['l',152,4,152,136,6]]},
 leg_raise:{v:'s',m:'',A:[100,38,100,50,100,84,101,108,101,132,106,66,108,50],B:[100,38,100,50,100,84,126,86,150,88,106,66,108,50],q:[['l',92,40,92,98,8],['l',106,68,116,68,5]]},
-chest_row:{v:'s',m:'h',A:[106,50,100,62,86,98,116,100,118,134,112,76,124,86],B:[106,50,100,62,86,98,116,100,118,134,88,76,106,82],q:[['l',114,50,114,90,8],['l',76,104,100,104,6],['l',90,106,90,136,4],['l',112,96,112,136,4]]}};
+chest_row:{v:'s',g:26,m:'h',A:[106,50,100,62,86,98,116,100,118,134,112,76,124,86],B:[106,50,100,62,86,98,116,100,118,134,88,76,106,82],q:[['l',114,50,114,90,8],['l',76,104,100,104,6],['l',90,106,90,136,4],['l',112,96,112,136,4]]}};
 // name, target, equipment, sets, setup, steps, avoid
 const T={
 incline_press:["Incline Bench Press","Upper chest · front delts · triceps","Incline bench + barbell (or Smith)","4 × 6–10","Bench at 30–45°. Shoulder blades pinched back, feet flat.",["Unrack and hold the bar over your upper chest.","Lower 2–3 sec until it lightly touches.","Press up and slightly back; exhale."],"Bouncing the bar, flaring elbows past 75°, hips lifting."],
@@ -102,33 +105,45 @@ const DAYS=[
 ["Thu","Thursday","Upper body","\"Row\" is the seated cable row. Swap the V-handle for a wide bar if you like.",[["Chest",["incline_press","pec_deck","decline_press"]],["Back",["chest_row","lat_pulldown","close_row"]]]],
 ["Fri","Friday","Arms · Abs",null,[["Biceps",["incline_curl","preacher","hammer"]],["Triceps",["pushdown","overhead_tri"]],["Abs",["cable_crunch","leg_raise"]]]]];
 
-const NS='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-color-scheme: no-preference) and (prefers-reduced-motion: reduce)').matches||matchMedia('(prefers-reduced-motion: reduce)').matches;
-const L=(a,b,u)=>a.map((v,i)=>v+(b[i]-v)*u);
-function shape(q){return q.map(s=>s[0]=='l'?`<line x1="${s[1]}" y1="${s[2]}" x2="${s[3]}" y2="${s[4]}" stroke-width="${s[5]}" stroke="var(--mach)" stroke-linecap="round"/>`:s[0]=='r'?`<rect x="${s[1]}" y="${s[2]}" width="${s[3]}" height="${s[4]}" rx="4" fill="var(--mach)"/>`:`<circle cx="${s[1]}" cy="${s[2]}" r="${s[3]}" fill="none" stroke="var(--mach)" stroke-width="3"/>`).join('')}
-const ln=(a,b,c,d,w)=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke-width="${w||4.5}"/>`;
-function mark(m,x,y){return m=='b'?`<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="var(--acc)" stroke-width="3"/><circle cx="${x}" cy="${y}" r="3" fill="var(--acc)"/>`:m=='d'?`<rect x="${x-6}" y="${y-3}" width="12" height="6" rx="2" fill="var(--acc)"/>`:m=='h'?`<circle cx="${x}" cy="${y}" r="4.5" fill="var(--acc)"/>`:''}
-function frame(e,u){
- const p=L(e.A,e.B,u);let s='<g stroke="var(--ink)" stroke-linecap="round" stroke-linejoin="round" fill="none">';
- if(e.v=='s'){
-  s+=ln(p[2],p[3],p[4],p[5],5)+ln(p[4],p[5],p[6],p[7])+ln(p[6],p[7],p[8],p[9])+ln(p[8],p[9],p[8]+7,p[9])+ln(p[2],p[3],p[10],p[11])+ln(p[10],p[11],p[12],p[13])+`<circle cx="${p[0]}" cy="${p[1]}" r="7.5" fill="var(--card)" stroke-width="4"/>`;
-  s+='</g>';
-  if(e.c)s+=`<line x1="${e.c[0]}" y1="${e.c[1]}" x2="${p[12]}" y2="${p[13]}" stroke="var(--acc)" stroke-width="1.2" stroke-dasharray="3 2"/>`;
-  if(e.fm==1){const dx=p[8]-p[6],dy=p[9]-p[7],n=Math.hypot(dx,dy),px=-dy/n*11,py=dx/n*11;s+=`<line x1="${p[8]-px}" y1="${p[9]-py}" x2="${p[8]+px}" y2="${p[9]+py}" stroke="var(--acc)" stroke-width="5" stroke-linecap="round"/>`}
-  if(e.fm==2)s+=`<circle cx="${p[6]+(p[8]-p[6])*.85}" cy="${p[7]+(p[9]-p[7])*.85}" r="4.5" fill="var(--acc)"/>`;
-  s+=mark(e.m,p[12],p[13]);
- }else{
-  const c=120,ny=p[0],py=p[1];
-  s+=ln(c,ny,c,py,5)+ln(c-16,ny+5,c+16,ny+5)+ln(c-6,py,c+6,py)+`<circle cx="${c}" cy="${ny-11}" r="8" fill="var(--card)" stroke-width="4"/>`;
-  for(const k of[-1,1]){s+=ln(c+k*16,ny+5,c+k*p[2],p[3])+ln(c+k*p[2],p[3],c+k*p[4],p[5])+ln(c+k*6,py,c+k*p[6],p[7])+ln(c+k*p[6],p[7],c+k*p[8],p[9]);}
-  s+='</g>';
-  for(const k of[-1,1]){s+=mark(e.m,c+k*p[4],p[5]);if(e.kp)s+=`<rect x="${c+k*(p[6]+e.kp)-3}" y="${p[7]-9}" width="6" height="18" rx="3" fill="var(--acc)"/>`}
- }
- return `<line x1="8" y1="137" x2="232" y2="137" stroke="var(--line)" stroke-width="2"/>`+shape(e.q)+s;
-}
-const live=[];let last=0;
-function loop(t){for(const o of live){if(!o.el.isConnected)continue;let u=o.mode=='A'?0:o.mode=='B'?1:0;
- if(o.mode=='play'){const ph=((t-o.t0)/3800)%1,tri=ph<.5?ph*2:2-ph*2,x=Math.min(1,Math.max(0,(tri-.12)/.76));u=x*x*(3-2*x)}
- if(u!==o.u){o.u=u;o.g.innerHTML=frame(o.e,u);}}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,R=Math.PI/180,live=[],sm=x=>x*x*(3-2*x);
+// 3D joints [depth, lateral, height]; front-facing poses get depth from per-exercise hints
+function joints(e,u){const p=e.A.map((v,i)=>v+(e.B[i]-v)*u),g=e.g||15,J={};
+ if(e.v=='s'){J.head=[p[0],0,p[1]];J.sh=k=>[p[2],k*14,p[3]];J.hp=k=>[p[4],k*7,p[5]];J.kn=k=>[p[6],k*8,p[7]];J.ft=k=>[p[8],k*9,p[9]];J.el=k=>[p[10],k*(g*.6+8),p[11]];J.wr=k=>[p[12],k*g,p[13]]}
+ else{const D=100,kd=e.sit?20:0,fw=e.fw==null?6:e.fw;J.head=[D,0,p[0]-11];J.sh=k=>[D,k*16,p[0]+5];J.hp=k=>[D,k*6,p[1]];J.kn=k=>[D+kd,k*p[6],p[7]];J.ft=k=>[D+kd+2,k*p[8],p[9]];J.el=k=>[D+(e.fe||0),k*p[2],p[3]];J.wr=k=>[D+fw,k*p[4],p[5]];J.pad=k=>[D+kd,k*(p[6]+(e.kp||0)),p[7]]}
+ return J}
+const P=(t,p)=>{const c=Math.cos(t),s=Math.sin(t),d=p[0]-110,z=-d*s+p[1]*c;return[120+d*c+p[1]*s,p[2]+z*.14,z]};
+const box=(d0,d1,l0,l1,y0,y1)=>{const a=[];for(const d of[d0,d1])for(const l of[l0,l1])for(const y of[y0,y1])a.push([d,l,y]);return a};
+const seg=(x1,y1,x2,y2,w,h)=>{const dx=x2-x1,dy=y2-y1,n=Math.hypot(dx,dy)||1,px=-dy/n*w/2,py=dx/n*w/2,a=[];for(const[x,y]of[[x1,y1],[x2,y2]])for(const s of[-1,1])for(const l of[-h,h])a.push([x+s*px,l,y+s*py]);return a};
+function hull(pts){pts=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]),lo=[],up=[];for(const p of pts){while(lo.length>1&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}for(const p of pts.reverse()){while(up.length>1&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}return lo.slice(0,-1).concat(up.slice(0,-1))}
+const pt=h=>h.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
+const poly=(h,f,o,sk)=>`<polygon points="${pt(h)}" fill="${f}" fill-opacity="${o||1}" stroke="${sk||'var(--ink)'}" stroke-opacity=".4" stroke-width="1" stroke-linejoin="round"/>`;
+// machine parts from the original 2D shapes -> 3D slabs
+function mach(e){const o=[];for(const s of e.q){
+ if(e.v=='s'){if(s[0]=='l')o.push(seg(s[1],s[2],s[3],s[4],s[5],s[5]>=7?15:s[5]>=5?9:4));else if(s[0]=='r')o.push(box(s[1],s[1]+s[3],-13,13,s[2],s[2]+s[4]));else o.push({c:[s[1],0,s[2]],r:s[3]})}
+ else{if(s[0]=='r')o.push(box(86,94,s[1]-120,s[1]-120+s[3],s[2],s[2]+s[4]));else if(s[2]==s[4])o.push(box(92,124,Math.min(s[1],s[3])-120,Math.max(s[1],s[3])-120,s[2],s[2]+s[5]));else o.push(box(97,103,s[1]-123,s[1]-117,s[2],s[4]))}}
+ return o}
+function frame(o){const e=o.e,t=o.th*R,J=joints(e,o.u),pr=p=>P(t,p),it=[],add=(z,s)=>it.push([z,s]);
+ add(-999,poly(hull(box(-5,225,-45,45,137,137).map(pr)),'var(--soft)','1','var(--line)'));
+ for(const m of mach(e)){if(m.c){const q=pr(m.c);add(q[2],`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${m.r*1.8}" fill="none" stroke="var(--mach)" stroke-width="3"/>`)}else{const q=m.map(pr);add(q.reduce((a,b)=>a+b[2],0)/q.length,poly(hull(q),'var(--mach)','.85'))}}
+ const ln=(a,b,w,c,z,ex)=>{a=pr(a);b=pr(b);add(z==null?(a[2]+b[2])/2:z,`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c||'var(--body)'}" stroke-width="${w}" stroke-linecap="round" ${ex||''}/>`)};
+ const dot=(p,r,f,z)=>{const q=pr(p);add(z==null?q[2]:z,`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${r}" fill="${f}"/>`)};
+ if(e.c)for(const k of[-1,1])ln([e.c[0],0,e.c[1]],J.wr(k),1.4,'var(--acc)',null,'stroke-dasharray="3 2"');
+ const tq=[J.sh(-1),J.sh(1),J.hp(1),J.hp(-1)].map(pr);add(tq.reduce((a,b)=>a+b[2],0)/4,`<polygon points="${pt(hull(tq))}" fill="var(--body)" stroke="var(--body)" stroke-width="9" stroke-linejoin="round"/>`);
+ for(const k of[-1,1]){ln(J.sh(k),J.el(k),7);ln(J.el(k),J.wr(k),6);ln(J.hp(k),J.kn(k),10);ln(J.kn(k),J.ft(k),8);const f=J.ft(k);ln(f,[f[0]+7,f[1],f[2]],5)}
+ const hd=J.head;dot(hd,8,'var(--body)');dot([hd[0]+7,0,hd[2]],2.2,'var(--acc)',pr(hd)[2]+3);
+ for(const k of[-1,1]){const w=J.wr(k),z=pr(w)[2]+.5;if(e.m=='d')ln([w[0],w[1]-6,w[2]],[w[0],w[1]+6,w[2]],7,'var(--acc)',z);else if(e.m=='h')dot(w,4.5,'var(--acc)',z);if(e.kp)dot(J.pad(k),5,'var(--acc)',pr(J.pad(k))[2]+1)}
+ if(e.m=='b'){const w=J.wr(1);ln([w[0],-(w[1]+12),w[2]],[w[0],w[1]+12,w[2]],4,'var(--acc)')}
+ if(e.fm==1){const a=J.kn(1),b=J.ft(1),dx=b[0]-a[0],dy=b[2]-a[2],n=Math.hypot(dx,dy),px=-dy/n*11,py=dx/n*11;add(pr(b)[2]+1,poly(hull(seg(b[0]-px,b[2]-py,b[0]+px,b[2]+py,5,22).map(pr)),'var(--acc)'))}
+ if(e.fm==2){const a=J.kn(0),b=J.ft(0),x=a[0]+(b[0]-a[0])*.85,y=a[2]+(b[2]-a[2])*.85;ln([x,-10,y],[x,10,y],6,'var(--acc)',pr([x,0,y])[2]+1)}
+ const A=joints(e,0).wr(1),B=joints(e,1).wr(1);ln(A,B,1.4,'var(--acc)',999,'stroke-dasharray="2 3" opacity=".7"');for(const w of[A,B]){const q=pr(w);add(999,`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6" fill="none" stroke="var(--acc)" stroke-width="1.4" opacity=".7"/>`)}
+ const zq=pr(e.fm||e.kp?J.kn(0):J.wr(0));o.vb=o.z?`${(zq[0]-55).toFixed(0)} ${(zq[1]-34).toFixed(0)} 110 69`:'0 0 240 150';
+ return it.sort((a,b)=>a[0]-b[0]).map(x=>x[1]).join('')}
+function loop(t){for(const o of live){if(!o.vis||!o.el.isConnected)continue;
+ if(o.orbit&&o.drag==null)o.th=(o.th+.45)%360;
+ let u=o.mode=='B'?1:0,ph=o.mode=='A'?'Start position':'Finish position';
+ if(o.mode=='play'){const c=((t-o.t0)/1000)%4.4;if(c<.5)ph='Get set · breathe in';else if(c<1.7){u=sm((c-.5)/1.2);ph='Lift · breathe out'}else if(c<2.3){u=1;ph='Squeeze for 1 second'}else{u=sm(1-(c-2.3)/2.1);ph='Lower slowly · breathe in'}}
+ if(u!==o.u||o.th!==o.pth||o.z!==o.pz){o.u=u;o.pth=o.th;o.pz=o.z;o.g.innerHTML=frame(o);o.svg.setAttribute('viewBox',o.vb)}
+ if(ph!==o.ph){o.ph=ph;o.cap.textContent=ph}}
  requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 
@@ -138,7 +153,10 @@ const get=k=>{try{return localStorage.getItem(k)==='1'}catch(e){return false}},s
 function tabs(){$('#tabs').innerHTML=DAYS.map((d,i)=>`<button role="tab" aria-selected="${i==cur}" data-i="${i}">${d[0]}<small>${d[4].map(g=>g[0]).slice(0,1)}</small></button>`).join('');
  $('#tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;tabs();day();scrollTo({top:0})})}
 function card(dk,id,n){const t=T[id],e=X[id],full=id;
- return `<article class="card" data-id="${id}"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="Animated diagram: ${t[0]}"><g></g></svg><div class="chips" role="group" aria-label="Diagram view"><button data-m="play" aria-pressed="${!reduce}">Play</button><button data-m="A" aria-pressed="${reduce}">Start</button><button data-m="B" aria-pressed="false">Finish</button></div></div>
+ return `<article class="card" data-id="${id}"><div class="art"><span class="mtag">Machine: ${t[2]}</span><svg viewBox="0 0 240 150" role="img" aria-label="Rotatable animated diagram: ${t[0]}"><g></g></svg><div class="cap"></div>
+ <div class="chips" role="group" aria-label="Camera angle"><button data-th="0" aria-pressed="true">Side</button><button data-th="315" aria-pressed="false">¾ Front</button><button data-th="270" aria-pressed="false">Front</button><button data-th="90" aria-pressed="false">Back</button></div>
+ <div class="chips" role="group" aria-label="View options"><button data-o aria-pressed="false">Auto-spin</button><button data-z aria-pressed="false">Zoom in</button></div>
+ <div class="chips" role="group" aria-label="Motion"><button data-m="play" aria-pressed="${!reduce}">Play</button><button data-m="A" aria-pressed="${reduce}">Start</button><button data-m="B" aria-pressed="false">Finish</button></div><small class="hint">Drag the figure to spin it.</small></div>
  <div class="body"><div class="top"><input class="chk" type="checkbox" aria-label="Mark ${t[0]} done" ${get(key(dk,id))?'checked':''}><h3>${n}. ${t[0]}</h3><span class="badge">${t[3]}</span></div>
  <div class="meta">${t[1]} — ${t[2]}</div>${id=='abductor'||id=='adductor'?`<div class="wk"><button data-w="0" aria-pressed="${id=='abductor'}">Week A · Abductor</button><button data-w="1" aria-pressed="${id=='adductor'}">Week B · Adductor</button></div>`:''}
  <h4>Set up</h4><p>${t[4]}</p><h4>How to do it</h4><ol>${t[5].map(s=>`<li>${s}</li>`).join('')}</ol><h4>Avoid</h4><p class="avoid">${t[6]}</p></div></article>`}
@@ -149,8 +167,16 @@ function day(){live.length=0;const d=DAYS[cur];let n=0,tot=0;
  tot=n;$('#main').innerHTML=h;wire(d[0],tot)}
 function wire(dk,tot){
  const upd=()=>{const c=document.querySelectorAll('.chk:checked').length;$('#bar').style.width=c/tot*100+'%';$('#pt').textContent=c+' of '+tot+' done'};
- document.querySelectorAll('.card').forEach(el=>{let id=el.dataset.id;const o={el,e:X[id],g:el.querySelector('svg g'),mode:reduce?'A':'play',t0:performance.now(),u:-1};live.push(o);
-  el.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>{o.mode=b.dataset.m;o.u=-1;el.querySelectorAll('.chips button').forEach(x=>x.setAttribute('aria-pressed',x==b))});
+ document.querySelectorAll('.card').forEach(el=>{const id=el.dataset.id,svg=el.querySelector('svg'),o={el,svg,e:X[id],g:svg.querySelector('g'),cap:el.querySelector('.cap'),mode:reduce?'A':'play',t0:performance.now(),th:0,u:-1,vis:true,orbit:false,z:false,drag:null};live.push(o);
+  new IntersectionObserver(es=>o.vis=es[0].isIntersecting).observe(el);
+  const on=(sel,f)=>el.querySelectorAll(sel).forEach(b=>b.onclick=()=>f(b)),all=(sel,f)=>el.querySelectorAll(sel).forEach(f);
+  on('[data-m]',b=>{o.mode=b.dataset.m;o.u=-1;all('[data-m]',x=>x.setAttribute('aria-pressed',x==b))});
+  on('[data-th]',b=>{o.th=+b.dataset.th;o.orbit=false;all('[data-th],[data-o]',x=>x.setAttribute('aria-pressed',x==b))});
+  on('[data-o]',b=>{o.orbit=!o.orbit;all('[data-th]',x=>x.setAttribute('aria-pressed',false));b.setAttribute('aria-pressed',o.orbit)});
+  on('[data-z]',b=>{o.z=!o.z;b.setAttribute('aria-pressed',o.z)});
+  svg.onpointerdown=ev=>{o.drag=ev.clientX;o.d0=o.th;o.orbit=false;svg.setPointerCapture(ev.pointerId)};
+  svg.onpointermove=ev=>{if(o.drag!=null)o.th=(((o.d0-(ev.clientX-o.drag)*.8)%360)+360)%360};
+  svg.onpointerup=svg.onpointercancel=()=>{o.drag=null};
   const c=el.querySelector('.chk');c.onchange=()=>{set(key(dk,id),c.checked);el.classList.toggle('done',c.checked);upd()};el.classList.toggle('done',c.checked);
   el.querySelectorAll('.wk button').forEach(b=>b.onclick=()=>{alt=+b.dataset.w;day()})});upd()}
 tabs();day();
