@@ -4,9 +4,9 @@
 <title>Gym Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#ECEEF1;--card:#fff;--ink:#12161B;--mut:#5A6572;--line:#D5DAE1;--acc:#2B50FF;--onacc:#fff;--mach:#E8A33D;--soft:#F4F6F8;--body:#2E3B52}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD}}
-:root[data-theme="dark"]{--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#ECEEF1;--card:#fff;--ink:#12161B;--mut:#5A6572;--line:#D5DAE1;--acc:#2B50FF;--onacc:#fff;--mach:#E8A33D;--soft:#F4F6F8;--body:#2E3B52;--pad:#3B424C;--plate:#8A94A3}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD;--pad:#6B7684;--plate:#A8B1BE}}
+:root[data-theme="dark"]{--bg:#0F1318;--card:#171C23;--ink:#EEF1F5;--mut:#98A3B0;--line:#2A323C;--acc:#7F95FF;--onacc:#0F1318;--mach:#C98A2B;--soft:#1E242C;--body:#C3CEDD;--pad:#6B7684;--plate:#A8B1BE}
 *,*:before,*:after{box-sizing:inherit}html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Barlow,system-ui,-apple-system,"Segoe UI",sans-serif}
 h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;margin:0;letter-spacing:.01em}
@@ -42,7 +42,7 @@ h4{margin:12px 0 4px;font:600 15px Barlow,sans-serif}
 .cap{font:600 15px Barlow,sans-serif;text-align:center;min-height:22px}
 .art svg{touch-action:pan-y;cursor:grab}.chips{flex-wrap:wrap}.hint{color:var(--mut);font-size:12px;text-align:center}
 </style></head><body><div class="wrap">
-<header><h1>Gym Plan</h1><p>Five days. Tap a day, follow the cards top to bottom, and tick each exercise off. Sets × reps are suggestions.</p><p class="note" style="margin-top:14px"><b>New to the gym?</b> The amber shapes are the machine. The blue dots and bars are where your hands or feet go. Spin any diagram with Side / Front / Back, or drag it. Start light, ask staff to set the seat and pin, and stop if anything hurts.</p></header>
+<header><h1>Gym Plan</h1><p>Five days. Tap a day, follow the cards top to bottom, and tick each exercise off. Sets × reps are suggestions.</p><p class="note" style="margin-top:14px"><b>New to the gym?</b> Amber is the machine frame, dark grey is the padded seat and back, and grey discs are the weight plates. Blue is what you hold or push: handles, bars, dumbbells and foot or knee pads. Spin any diagram with Side / Front / Back, or drag it. Start light, ask staff to set the seat and pin, and stop if anything hurts.</p></header>
 <nav id="tabs" role="tablist"></nav><main id="main"></main></div>
 <script>
 // pose arrays. side: [headX,headY,neckX,neckY,hipX,hipY,kneeX,kneeY,footX,footY,elbowX,elbowY,wristX,wristY]
@@ -118,21 +118,36 @@ function hull(pts){pts=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o
 const pt=h=>h.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');
 const poly=(h,f,o,sk)=>`<polygon points="${pt(h)}" fill="${f}" fill-opacity="${o||1}" stroke="${sk||'var(--ink)'}" stroke-opacity=".4" stroke-width="1" stroke-linejoin="round"/>`;
 // machine parts from the original 2D shapes -> 3D slabs
-function mach(e){const o=[];for(const s of e.q){
- if(e.v=='s'){if(s[0]=='l')o.push(seg(s[1],s[2],s[3],s[4],s[5],s[5]>=7?15:s[5]>=5?9:4));else if(s[0]=='r')o.push(box(s[1],s[1]+s[3],-13,13,s[2],s[2]+s[4]));else o.push({c:[s[1],0,s[2]],r:s[3]})}
- else{if(s[0]=='r')o.push(box(86,94,s[1]-120,s[1]-120+s[3],s[2],s[2]+s[4]));else if(s[2]==s[4])o.push(box(92,124,Math.min(s[1],s[3])-120,Math.max(s[1],s[3])-120,s[2],s[2]+s[5]));else o.push(box(97,103,s[1]-123,s[1]-117,s[2],s[4]))}}
+const MX={incline_press:{G:'bb',rk:50},pec_deck:{G:'lv',pv:[92,30,38],S:[70,30]},decline_press:{G:'lv',pv:[44,80,24],S:[22,50]},shoulder_press:{G:'lv',pv:[92,78,34],S:[70,30]},lateral_raise:{G:'db',ax:'d'},pushdown:{G:'rope'},overhead_tri:{G:'rope'},lat_pulldown:{G:'lat',S:[142,20]},tbar_row:{G:'tb'},close_row:{G:'vh',S:[222,50]},rear_delt:{G:'lv',pv:[92,46,40],S:[70,30]},incline_curl:{G:'db'},preacher:{G:'lv',pv:[134,104,10],S:[152,60]},hammer:{G:'db',ax:'d'},leg_press:{G:'lp'},leg_curl:{G:'lv',pv:[106,112,14],S:[66,70]},leg_ext:{G:'lv',pv:[112,112,14],S:[66,70]},abductor:{G:'lv',pv:[98,122,30],S:[70,50]},adductor:{G:'lv',pv:[98,122,30],S:[70,50]},cable_crunch:{G:'rope'},leg_raise:{fr:[[112,68,112,137,5,22]]},chest_row:{G:'lv',pv:[138,108,26],S:[152,50]}};
+for(const k in X)X[k].id=k;
+const dc=(cd,cy,r,l0,l1)=>{const a=[];for(let i=0;i<12;i++){const t=i*Math.PI/6;for(const l of[l0,l1])a.push([cd+r*Math.cos(t),l,cy+r*Math.sin(t)])}return a};
+// full machine: frame (amber), padded seats (dark), weight stack + plates, levers, then what you hold (blue)
+function mach(e,J){const o=[],M=MX[e.id]||{},Sx=(p,f,op)=>o.push({p,f,o:op}),Lx=(a,b,w,f)=>o.push({a,b,w,f}),ac='var(--acc)',gy='#2a2f36';
+ const stack=(d,top)=>{for(let y=top;y<130;y+=6)Sx(box(d-9,d+9,-12,12,y,y+4.5),'var(--plate)');Sx(box(d-10,d+10,-14,14,top-6,top-2),'var(--mach)');for(const k of[-1,1])Lx([d,k*13,top-6],[d,k*13,136],3,'var(--mach)');Lx([d-11,0,top+19],[d+2,0,top+19],3,ac)};
+ for(const s of e.q){const w=s[5],f=w>=6?'var(--pad)':'var(--mach)';
+  if(e.v=='s'){if(s[0]=='l'){if(s[1]==s[3]&&Math.abs(s[4]-s[2])>100)stack(s[1],20);else Sx(seg(s[1],s[2],s[3],s[4],w,w>=7?15:w>=5?9:4),f)}else if(s[0]=='r')Sx(box(s[1],s[1]+s[3],-13,13,s[2],s[2]+s[4]),'var(--pad)');else if(s[3]<8)Sx(dc(s[1],s[2],7,-3,3),'var(--plate)')}
+  else{if(s[0]=='r')Sx(box(86,94,s[1]-120,s[1]-120+s[3],s[2],s[2]+s[4]),'var(--pad)');else if(s[2]==s[4])Sx(box(92,124,Math.min(s[1],s[3])-120,Math.max(s[1],s[3])-120,s[2],s[2]+w),'var(--pad)');else Sx(box(97,103,s[1]-123,s[1]-117,s[2],s[4]),'var(--mach)')}}
+ for(const r of M.fr||[])for(const k of[-1,1])Lx([r[0],k*r[5],r[1]],[r[2],k*r[5],r[3]],r[4],'var(--mach)');
+ if(M.S)stack(M.S[0],M.S[1]);
+ let d0=1e9,d1=-1e9;for(const m of o)if(m.p)for(const q of m.p){d0=Math.min(d0,q[0]);d1=Math.max(d1,q[0])}
+ if(e.q.length)for(const k of[-1,1])Lx([d0-4,k*18,134],[d1+4,k*18,134],4,'var(--mach)');
+ const G=M.G,p0=e.c&&[e.c[0],0,e.c[1]],mid=()=>{const a=J.wr(-1),b=J.wr(1);return[(a[0]+b[0])/2,0,(a[2]+b[2])/2]};
+ if(G=='rope'){const m=mid(),h=[m[0],0,m[2]-10];Lx(p0,h,1.8,gy);for(const k of[-1,1]){const w=J.wr(k);Lx(h,w,4,ac);Lx(w,[w[0],w[1]+k*5,w[2]+10],4,ac)}}
+ if(G=='lat'||G=='vh'){const m=mid(),h=[m[0],0,m[2]-(G=='lat'?12:5)];Lx(p0,h,1.8,gy);Lx(J.wr(-1),J.wr(1),5,ac);for(const k of[-1,1])Lx(h,J.wr(k),2,'var(--plate)')}
+ if(G=='tb'){const m=mid();Lx(p0,m,5,'var(--plate)');Lx(J.wr(-1),J.wr(1),5,ac);for(const k of[-1,1])Sx(dc(p0[0],p0[2]-3,11,k*6,k*11),'var(--plate)')}
+ if(G=='bb'){const w=J.wr(1),g=e.g||15;Lx([w[0],-g-30,w[2]],[w[0],g+30,w[2]],3,'var(--plate)');for(const k of[-1,1]){Lx([w[0],k*g-5,w[2]],[w[0],k*g+5,w[2]],5,ac);Sx(dc(w[0],w[2],11,k*(g+16),k*(g+22)),'var(--plate)');Lx([M.rk,k*(g+32),48],[M.rk,k*(g+32),137],5,'var(--mach)')}}
+ if(G=='db')for(const k of[-1,1]){const w=J.wr(k),A=e.ax=='d';Lx(A?[w[0]-7,w[1],w[2]]:[w[0],w[1]-7,w[2]],A?[w[0]+7,w[1],w[2]]:[w[0],w[1]+7,w[2]],5,ac);for(const s of[-1,1]){const a=s>0?7:-13,b=s>0?13:-7;Sx(A?box(w[0]+a,w[0]+b,w[1]-5,w[1]+5,w[2]-6,w[2]+6):box(w[0]-5,w[0]+5,w[1]+a,w[1]+b,w[2]-6,w[2]+6),'var(--plate)')}}
+ if(G=='lv')for(const k of[-1,1]){const a=e.fm==2?J.kn(k):0,b=e.fm==2?J.ft(k):0,E=e.kp?J.pad(k):e.fm==2?[a[0]+(b[0]-a[0])*.85,k*9,a[2]+(b[2]-a[2])*.85]:J.wr(k);Lx([M.pv[0],k*(M.pv[2]||24),M.pv[1]],E,5,'var(--mach)');if(e.kp)Sx(box(E[0]-4,E[0]+4,E[1]-3,E[1]+3,E[2]-12,E[2]+12),ac);else if(e.fm!=2)Lx([E[0],E[1]-6,E[2]],[E[0],E[1]+6,E[2]],6,ac)}
+ if(G=='lp'){const f0=joints(e,0).ft(1),f1=joints(e,1).ft(1),v0=f1[0]-f0[0],v1=f1[2]-f0[2],f=J.ft(1);for(const k of[-1,1]){Lx([f0[0]-v0*1.4,k*20,f0[2]-v1*1.4],[f1[0]+v0*.6,k*20,f1[2]+v1*.6],4,'var(--mach)');Lx([f[0],k*11,f[2]],[f[0]+12,k*26,f[2]-4],3,'var(--mach)');Sx(dc(f[0]+12,f[2]-4,13,k*26,k*32),'var(--plate)')}}
  return o}
 function frame(o){const e=o.e,t=o.th*R,J=joints(e,o.u),pr=p=>P(t,p),it=[],add=(z,s)=>it.push([z,s]);
  add(-999,poly(hull(box(-5,225,-45,45,137,137).map(pr)),'var(--soft)','1','var(--line)'));
- for(const m of mach(e)){if(m.c){const q=pr(m.c);add(q[2],`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${m.r*1.8}" fill="none" stroke="var(--mach)" stroke-width="3"/>`)}else{const q=m.map(pr);add(q.reduce((a,b)=>a+b[2],0)/q.length,poly(hull(q),'var(--mach)','.85'))}}
  const ln=(a,b,w,c,z,ex)=>{a=pr(a);b=pr(b);add(z==null?(a[2]+b[2])/2:z,`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${c||'var(--body)'}" stroke-width="${w}" stroke-linecap="round" ${ex||''}/>`)};
  const dot=(p,r,f,z)=>{const q=pr(p);add(z==null?q[2]:z,`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${r}" fill="${f}"/>`)};
- if(e.c)for(const k of[-1,1])ln([e.c[0],0,e.c[1]],J.wr(k),1.4,'var(--acc)',null,'stroke-dasharray="3 2"');
+ for(const m of mach(e,J)){if(m.a)ln(m.a,m.b,m.w,m.f);else{const q=m.p.map(pr);add(q.reduce((a,b)=>a+b[2],0)/q.length,poly(hull(q),m.f,m.o||.92))}}
  const tq=[J.sh(-1),J.sh(1),J.hp(1),J.hp(-1)].map(pr);add(tq.reduce((a,b)=>a+b[2],0)/4,`<polygon points="${pt(hull(tq))}" fill="var(--body)" stroke="var(--body)" stroke-width="9" stroke-linejoin="round"/>`);
  for(const k of[-1,1]){ln(J.sh(k),J.el(k),7);ln(J.el(k),J.wr(k),6);ln(J.hp(k),J.kn(k),10);ln(J.kn(k),J.ft(k),8);const f=J.ft(k);ln(f,[f[0]+7,f[1],f[2]],5)}
  const hd=J.head;dot(hd,8,'var(--body)');dot([hd[0]+7,0,hd[2]],2.2,'var(--acc)',pr(hd)[2]+3);
- for(const k of[-1,1]){const w=J.wr(k),z=pr(w)[2]+.5;if(e.m=='d')ln([w[0],w[1]-6,w[2]],[w[0],w[1]+6,w[2]],7,'var(--acc)',z);else if(e.m=='h')dot(w,4.5,'var(--acc)',z);if(e.kp)dot(J.pad(k),5,'var(--acc)',pr(J.pad(k))[2]+1)}
- if(e.m=='b'){const w=J.wr(1);ln([w[0],-(w[1]+12),w[2]],[w[0],w[1]+12,w[2]],4,'var(--acc)')}
  if(e.fm==1){const a=J.kn(1),b=J.ft(1),dx=b[0]-a[0],dy=b[2]-a[2],n=Math.hypot(dx,dy),px=-dy/n*11,py=dx/n*11;add(pr(b)[2]+1,poly(hull(seg(b[0]-px,b[2]-py,b[0]+px,b[2]+py,5,22).map(pr)),'var(--acc)'))}
  if(e.fm==2){const a=J.kn(0),b=J.ft(0),x=a[0]+(b[0]-a[0])*.85,y=a[2]+(b[2]-a[2])*.85;ln([x,-10,y],[x,10,y],6,'var(--acc)',pr([x,0,y])[2]+1)}
  const A=joints(e,0).wr(1),B=joints(e,1).wr(1);ln(A,B,1.4,'var(--acc)',999,'stroke-dasharray="2 3" opacity=".7"');for(const w of[A,B]){const q=pr(w);add(999,`<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="6" fill="none" stroke="var(--acc)" stroke-width="1.4" opacity=".7"/>`)}
